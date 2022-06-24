@@ -41,6 +41,7 @@ root.configure(bg="#354259")
 #---------------------------------------------------#
 #                   MAIN AREA CODES                 #
 #---------------------------------------------------#
+
 notebook.add(login,text="Login")    
 notebook.add(regs,text="Register")   
 ttk.Style().configure("TNotebook", background="#354259")   #configure "tabs" background color
@@ -54,6 +55,10 @@ dtrTitle.pack(side="right", anchor="w", padx=50, pady=10)
 
 empName = Label(regs,text="Employee Name", font=("Times New Roman",20),bg="#354259", fg="#CDC2AE")
 empName.place(x=385,y=70)
+
+empPass = Label(regs,text=" Password", font=("Times New Roman",20),bg="#354259", fg="#CDC2AE")
+empPass.place(x=420,y=160)
+
 # CALLING TIME IN FUNCTION BUTTON () #
 def time_in():
     t.time_in(logs)
@@ -76,7 +81,6 @@ def bckBtn():
 
 def export():
     t.export()
-    
 
 def table():
     test = t.table(logs,stringPin)
@@ -93,7 +97,6 @@ def update():
 timeLabel = Label(login, font=("Times New Roman",40), fg="#CDC2AE",bg="#354259")
 timeLabel.place(x=350,y=140)
 
-
 # -- Time Called
 update()
 #---------------------------------------------------#
@@ -108,10 +111,16 @@ def pinInputRegs():
     pil =  t.pin_Input_Regs(regs)
     return pil
 pinRegs = pinInputRegs()
+
 def pinInputPass():
     pil =  t.pin_Input_Pass(passw)
     return pil
 pinPass = pinInputPass()
+
+def passInputRegs():
+    pil = t.pass_Input_Regs(regs)
+    return pil
+passRegs = passInputRegs()
 #---------------------------------------------------#
 #                    NUMPAD PART                    #
 #---------------------------------------------------#
@@ -153,6 +162,7 @@ def bckSpacePass():
     t.bckSpacePass(pinPass)
 def gotoLogsPass():
     t.gotoLogsPass(pinPass,logs,notebook)
+
 clrbtn = Button(passw, text="Clear",width=4, height=2, command=lambda:clearPinPass())
 clrbtn.place(x=70,y=250)
 btn = Button(passw, text="<-",  width=4, height=2, command=lambda:bckSpacePass())
@@ -168,7 +178,8 @@ def clearPinRegs():
 def bckSpaceRegs():
     t.bckSpaceRegs(pinRegs)
 def register():
-    t.registration(pinRegs,regs,login,notebook,regs_Name)
+    t.registration(pinRegs,regs,login,notebook,regs_Name,passRegs)
+
 clrbtn = Button(regs, text="Clear",width=4, height=2, command=lambda:clearPinRegs())
 clrbtn.place(x=70,y=250)
 btn = Button(regs, text="<-",  width=4, height=2, command=lambda:bckSpaceRegs())
