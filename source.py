@@ -19,7 +19,9 @@ class sourceCode():
     global stringPin
     global entryName
     global status 
+    # global regsPass
 
+    # regsPass = ""
     entryName = ""
     userPin =[]
     userPinRegs =[]
@@ -56,6 +58,11 @@ class sourceCode():
     def name_Input_Regs(self,regs):
         pinInput = Entry(regs, width=25,font=( "Times New Roman",20),fg="#354259",bg="#CDC2AE")
         pinInput.place(x=300,y=20)
+        pinInput.config(highlightbackground = "red", highlightcolor= "red")
+        return pinInput
+    def pass_Input_Regs(self,regs):
+        pinInput = Entry(regs, width=25,font=( "Times New Roman",20),fg="#354259",bg="#CDC2AE")
+        pinInput.place(x=300,y=120)
         pinInput.config(highlightbackground = "red", highlightcolor= "red")
         return pinInput
     #FUNCTIONS FOR BUTTONS ( ON CLICK )
@@ -189,17 +196,17 @@ class sourceCode():
             notebook.hide(2)
             #CALLING THE TABLE
             sc.table(logs,stringPin)
-    def registration(self,entry,regs,login,notebook,regsName):
+    def registration(self,entry,regs,login,notebook,regsName,regsPass):
         global status
         global userPinRegs
         global stringPinRegs
         global entryName
-
+        regs_pass = regsPass.get()
         entryName = regsName.get()
         # REPLACING THE WHITE SPACES
         stringPinRegs =  entry.get().replace(" ", "")
         pinConfig = len(stringPinRegs)
-        print(entryName,stringPinRegs)
+        print(entryName,stringPinRegs, regsPass)
 
         # SQL VALIDATION
         mycursor = db.cursor()
@@ -226,14 +233,15 @@ class sourceCode():
                 # CORRECT PIN / SUCCESS PIN INSERT
                 if(regs_VAL==1):
                     mycursor = db.cursor()
-                    mycursor.execute("INSERT INTO employid (EMPID, EMPNAME) VALUES (%s,%s)", (stringPinRegs,entryName))
+                    mycursor.execute("INSERT INTO employid (EMPID, EMPNAME, EMPPASS) VALUES (%s,%s,%s)", (stringPinRegs,entryName,regs_pass))
                     db.commit()
                     userPinRegs.clear()
                     entry.delete(0, END)
                     entry.insert(0, userPinRegs)
                     regsName.delete(0, END)
                     regsName.insert(0, userPinRegs)
-
+                    regsPass.delete(0, END)
+                    regsPass.insert(0, userPinRegs)
                     notebook.add(login,text="Login")
                     notebook.add(regs,text="Register")
                     notebook.hide(1)
@@ -248,7 +256,6 @@ class sourceCode():
         sql = ("SELECT * FROM `time_logs` WHERE EMPID=%s")
         eyed = (pin,)
         mycursor.execute(sql,eyed)
-
 
         # TABLE COLUMN -- no idea what for
         my_game = ttk.Treeview(logs,height=15)
@@ -383,6 +390,7 @@ class sourceCode():
                 db.commit()
             else: 
                 messagebox.showinfo("ALERT MESSAGE","YOU ALREADY TIMED OUT!") #IF THE RESULT IS ALREADY POPULATED THROWS A MESSAGE
+    
     def export(self,):
         global stringPin
         pin = stringPin
